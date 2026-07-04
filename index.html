@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<title>銀フレ 001–100</title>
+<title>銀フレ 001–200</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="銀フレ100">
+<meta name="apple-mobile-web-app-title" content="銀フレ">
 <meta name="theme-color" content="#12151F">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-180.png">
@@ -128,7 +128,7 @@ h1 small{color:var(--acc);font-weight:600;margin-left:6px;font-size:12px}
 </head>
 <body>
 <header>
-  <h1>銀フレ<small>Score 600 / 001–100</small></h1>
+  <h1>銀フレ<small>Score 600 / 001–200</small></h1>
   <div id="stat"></div>
 </header>
 <div id="bar"><div id="barFill"></div></div>
@@ -266,6 +266,106 @@ const D=[
 [98,"mention",[["動","述べる、言及する"],["名","言及"]],"What problem does the man {mention}?","男性はどんな問題について述べていますか。"],
 [99,"appreciate",[["動","感謝する"]],"I really {appreciate} your help.","助けて頂いて本当に感謝しています。"],
 [100,"replacement",[["名","交換、交換品、後任"]],"{replacement} parts","交換部品"],
+[101,"update",[["名","最新情報"],["動","更新する"]],"traffic {updates}","交通の最新情報"],
+[102,"branch",[["名","支店"]],"open a new {branch}","新しい支店をオープンする"],
+[103,"paid",[["形","有給の、支払い済みの"]],"{paid} leave","有給休暇"],
+[104,"unfortunately",[["副","残念なことに、残念ながら"]],"{Unfortunately}, there are some problems.","残念なことに、いくつか問題があります。"],
+[105,"original",[["形","元の、最初の"],["名","オリジナル、原本"]],"in {original} condition","元の状態で"],
+[106,"rent",[["名","家賃"],["動","賃貸借する"]],"a {rent} increase","家賃の値上げ"],
+[107,"memo",[["名","社内文書"]],"write a {memo}","社内文書を書く"],
+[108,"luggage",[["名","旅行かばん、手荷物"]],"shop for {luggage}","旅行かばんを買い求める"],
+[109,"editor",[["名","編集者"]],"a newspaper {editor}","新聞の編集者"],
+[110,"exhibition",[["名","展示会、展示物、展示"]],"an art {exhibition}","美術展"],
+[111,"leading",[["形","首位の、一流の"]],"a {leading} company","トップの会社"],
+[112,"organization",[["名","団体、会社、組織(化)"]],"lead an {organization}","組織を率いる"],
+[113,"release",[["動","発売する、公表する"],["名","発売"]],"{release} a new album","ニューアルバムを発売する"],
+[114,"limited",[["形","限られた"]],"for a {limited} time","期間限定で"],
+[115,"procedure",[["名","手続き、手順"]],"a normal {procedure}","通常の手続き"],
+[116,"experienced",[["形","経験豊富な"]],"an {experienced} engineer","経験豊かなエンジニア"],
+[117,"personnel",[["名","社員、人事部"]],"all company {personnel}","全社員"],
+[118,"author",[["名","著者、作者"],["動","(本を)書く"]],"the {author} of a popular book","人気本の著者"],
+[119,"benefit",[["名","特典、福利厚生"],["動","〜のためになる"]],"employee {benefits}","従業員の福利厚生"],
+[120,"focus",[["動","(意識等を)〜に集中させる、重点を置く"],["名","焦点、集中"]],"{focus} on one point","1点に集中する"],
+[121,"participate",[["動","参加する"]],"{participate} in the workshop","セミナーに参加する"],
+[122,"cause",[["名","原因、大義"],["動","引き起こす"]],"the {cause} of the problem","問題の原因"],
+[123,"degree",[["名","学位、程度、(温度や角度の単位の)度"]],"a {degree} in journalism","ジャーナリズムの学位"],
+[124,"directly",[["副","直接"]],"purchase {directly} from a Web site","ウェブサイトから直接購入する"],
+[125,"host",[["名","司会者"],["動","主催する"]],"the {host} of a television show","テレビ番組の司会者"],
+[126,"expert",[["名","専門家"],["形","専門的な"]],"an {expert} in the field","その分野の専門家"],
+[127,"impress",[["動","感心させる、好印象を与える"]],"We were {impressed} by your knowledge.","我々はあなたの知識に感心した。"],
+[128,"mainly",[["副","主に"]],"work {mainly} in the steel industry","主に鉄鋼業界で働く"],
+[129,"suggestion",[["名","提案"]],"make {suggestions}","提案を行う"],
+[130,"supplier",[["名","納入業者、供給業者"]],"relationships with {suppliers}","納入業者との関係"],
+[131,"document",[["名","書類"],["動","(文書や映像等で)記録する"]],"an important {document}","重要な書類"],
+[132,"remind",[["動","再確認する、念押しする"]],"{remind} employees about the policy","従業員に規則に関して再確認する"],
+[133,"require",[["動","求める、要求する"]],"Workers are {required} to wear uniforms.","作業員は制服の着用を求められます。"],
+[134,"representative",[["名","担当者、代表者"]],"a sales {representative}","営業担当者"],
+[135,"packaging",[["名","梱包、パッケージ"]],"the {packaging} area","梱包エリア"],
+[136,"description",[["名","説明、記述、描写"]],"a job {description}","職務内容の説明"],
+[137,"property",[["名","不動産、資産"]],"a {property} manager","不動産の管理人"],
+[138,"extension",[["名","内線、延長"]],"Call me at {extension} 4649.","内線4649にお電話ください。"],
+[139,"inquire",[["動","尋ねる、問い合わせる"]],"{inquire} about a job","仕事について問い合わせる"],
+[140,"merchandise",[["名","商品"]],"display {merchandise}","商品を陳列する"],
+[141,"highly",[["副","非常に"]],"a {highly} successful business","非常に成功しているビジネス"],
+[142,"result",[["動","生じる、終わる"],["名","結果"]],"The campaign {resulted} in success.","そのキャンペーンは成功という結果になった。"],
+[143,"assistance",[["名","支援、援助"]],"Thank you for your {assistance}.","ご支援ありがとうございます。"],
+[144,"encourage",[["動","奨励する、促す"]],"Employees are {encouraged} to attend the event.","従業員がイベントに参加することを奨励します。"],
+[145,"individual",[["名","個人"],["形","個人の、個別の"]],"each {individual} in the company","会社の一人一人の個人"],
+[146,"laboratory",[["名","研究所、実験室"]],"when entering the {laboratory}","研究所に入る時"],
+[147,"consider",[["動","考える、検討する"]],"{consider} working in Japan","日本での勤務を検討する"],
+[148,"headquarters",[["名","本社"]],"move the {headquarters} to Boston","本社をボストンに移転する"],
+[149,"ship",[["動","出荷する"],["名","船"]],"We are ready to {ship} your order.","注文を出荷する準備ができました。"],
+[150,"commercial",[["形","商業(用)の、商業的な"],["名","CM"]],"{commercial} buildings","商業ビル"],
+[151,"device",[["名","機器、装置"]],"a medical {device}","医療機器"],
+[152,"intended",[["形","意図された、向けられた"]],"For whom is the notice {intended}?","このお知らせは誰に向けられていますか。"],
+[153,"brochure",[["名","パンフレット"]],"a product {brochure}","製品パンフレット"],
+[154,"mail",[["名","郵便物、郵便配達"],["動","郵送する"]],"by express {mail}","速達郵便で"],
+[155,"prefer",[["動","〜を(…よりも)好む"]],"I {prefer} to work part-time.","私はパートタイムで働く方が好きです。"],
+[156,"response",[["名","返答、返事"]],"I'm writing in {response} to your letter.","お手紙へのご返事です。"],
+[157,"region",[["名","地域"]],"companies in the {region}","その地域の会社"],
+[158,"donation",[["名","寄付"]],"{donations} to a museum","ミュージアムへの寄付"],
+[159,"quarter",[["名","四半期"]],"the third {quarter}","第3四半期"],
+[160,"agreement",[["名","契約(書)、同意(書)、合意"]],"a rental {agreement}","賃貸契約書"],
+[161,"journal",[["名","専門誌"]],"a scientific {journal}","科学の専門誌"],
+[162,"distribute",[["動","配布する、流通させる"]],"{distribute} a document","書類を配布する"],
+[163,"potential",[["形","見込みがある、潜在的な"],["名","可能性"]],"{potential} customers","見込み客"],
+[164,"reschedule",[["動","スケジュール変更する"]],"{reschedule} an appointment","アポを予定変更する"],
+[165,"renew",[["動","更新する"]],"{renew} a contract","契約を更新する"],
+[166,"warehouse",[["名","倉庫"]],"ship from a {warehouse}","倉庫から出荷する"],
+[167,"refund",[["名","返金"],["動","返金する"]],"a full {refund}","全額返金"],
+[168,"advise",[["動","勧める、忠告する、助言する"]],"What are listeners {advised} to do?","聞き手は何をするよう勧められていますか。"],
+[169,"immediately",[["副","すぐに、即座に"]],"The tickets sold out {immediately}.","チケットは即売り切れた。"],
+[170,"council",[["名","議会"]],"the city {council}","市議会"],
+[171,"broadcast",[["動","放送する"],["名","放送"]],"The program is usually {broadcast} on Saturdays.","その番組は通常土曜日に放送される。"],
+[172,"responsible",[["形","担当している、責任がある"]],"I am {responsible} for training employees.","私は従業員の研修を担当している。"],
+[173,"avoid",[["動","避ける"]],"{avoid} wasting time","時間の無駄遣いを避ける"],
+[174,"effective",[["形","効果的な"]],"{effective} advertising campaigns","効果的な広告キャンペーン"],
+[175,"invitation",[["名","招待(状)"]],"receive an {invitation}","招待状を受け取る"],
+[176,"reduce",[["動","(値段を)下げる、減らす"]],"{reduce} prices","値段を下げる"],
+[177,"vehicle",[["名","乗り物、車両"]],"park a {vehicle}","乗り物を駐車する"],
+[178,"efficient",[["形","効率的な"]],"{efficient} use of energy","エネルギーの効率的な使用"],
+[179,"manufacturer",[["名","メーカー、製造業者"]],"a car {manufacturer}","自動車メーカー"],
+[180,"comfortable",[["形","快適な、楽な、自信がある"]],"{comfortable} rooms and friendly staff","快適な部屋とフレンドリーなスタッフ"],
+[181,"correct",[["形","正確な、正しい"],["動","修正する"]],"the {correct} address","正しい住所"],
+[182,"downtown",[["形","中心街の"],["副","中心街で"],["名","中心街"]],"{downtown} restaurants","中心街のレストラン"],
+[183,"method",[["名","方法"]],"the {method} of payment","支払い方法"],
+[184,"entire",[["形","全体の"]],"the {entire} staff","全スタッフ"],
+[185,"range",[["名","範囲"]],"a wide {range} of services","広範囲のサービス"],
+[186,"setting",[["名","環境"]],"a hotel in a beautiful {setting}","美しい環境にあるホテル"],
+[187,"apologize",[["動","おわびする"]],"We {apologize} for the inconvenience.","ご不便をおかけしますことをおわびします。"],
+[188,"frequent",[["形","頻繁な"]],"{frequent} use of the Internet","インターネットの頻繁な使用"],
+[189,"promotion",[["名","昇進、販売促進"]],"Tex's {promotion} to sales manager","テックスの営業マネージャーへの昇進"],
+[190,"regarding",[["前","〜に関する、〜に関して"]],"{regarding} your order","あなたのご注文に関して"],
+[191,"temporary",[["形","一時的な、臨時の"]],"{temporary} workers","臨時雇いの従業員"],
+[192,"traditional",[["形","伝統的な、従来の"]],"{traditional} Italian dishes","伝統的なイタリア料理"],
+[193,"admission",[["名","入場、入場料、入場許可"]],"{Admission} is free for all members.","メンバーは入場無料です。"],
+[194,"fit",[["動","合う、入る"]],"The room can {fit} 50 people.","その部屋には50人が入る。"],
+[195,"reference",[["名","照会先、照会、参照"]],"contact a {reference}","照会先に連絡を取る"],
+[196,"status",[["名","状況、地位"]],"shipment {status}","配送状況"],
+[197,"fuel",[["名","燃料"]],"{fuel} costs","燃料のコスト"],
+[198,"nearly",[["副","ほとんど、もう少しで"]],"{nearly} two years","2年近く"],
+[199,"cafeteria",[["名","社員食堂"]],"meet in the {cafeteria} for lunch","昼食のために社員食堂に集まる"],
+[200,"determine",[["動","決定する、判断する、決心する"]],"{determine} how to sell the product","製品の売り方を決定する"],
 ];
 
 const KEY="ginfure600_v1";
@@ -322,13 +422,13 @@ function buildChips(){
     const done=val==="all"
       ? Object.keys(S.known).length
       : D.slice(val*10,val*10+10).filter(d=>S.known[d[0]]).length;
-    const total=val==="all"?100:10;
+    const total=val==="all"?D.length:10;
     b.innerHTML=(done===total?'<span class="dot"></span>':"")+label;
     b.onclick=()=>{S.range=val;save();refresh(true)};
     c.appendChild(b);
   };
   mk("全部","all");
-  for(let i=0;i<10;i++) mk(`${String(i*10+1).padStart(3,"0")}–${String(i*10+10).padStart(3,"0")}`,i);
+  for(let i=0;i<20;i++) mk(`${String(i*10+1).padStart(3,"0")}–${String(i*10+10).padStart(3,"0")}`,i);
 }
 
 function buildDeck(){
@@ -354,7 +454,7 @@ function renderCard(){
   $("actions").style.visibility=has?"visible":"hidden";
   if(!has)return;
   const d=deck[idx];
-  $("num").innerHTML=`<b>${String(d[0]).padStart(3,"0")}</b> / 100 　 ${idx+1}/${deck.length}`;
+  $("num").innerHTML=`<b>${String(d[0]).padStart(3,"0")}</b> / ${D.length} 　 ${idx+1}/${deck.length}`;
   $("knownTag").style.display=S.known[d[0]]?"block":"none";
   $("ja").textContent=d[4];
   $("en").innerHTML=phrase(d[3],revealed);
@@ -368,8 +468,8 @@ function renderCard(){
 
 function renderStat(){
   const n=Object.keys(S.known).length;
-  $("stat").innerHTML=`覚えた <b>${n}</b> / 100`;
-  $("barFill").style.width=n+"%";
+  $("stat").innerHTML=`覚えた <b>${n}</b> / ${D.length}`;
+  $("barFill").style.width=(n/D.length*100)+"%";
 }
 
 function renderList(){
@@ -421,7 +521,7 @@ $("tAuto").onclick=()=>{S.auto=!S.auto;save();refresh(false)};
 
 function jumpTo(n){
   n=parseInt(n,10);
-  if(!(n>=1&&n<=100)){if(!isNaN(n))alert("1〜100の番号を入力してください");return}
+  if(!(n>=1&&n<=D.length)){if(!isNaN(n))alert("1〜"+D.length+"の番号を入力してください");return}
   // 指定番号を含む範囲に切り替え、その番号から順番に出題
   if(S.range!=="all")S.range=Math.floor((n-1)/10); // 範囲学習中なら該当チップへ、全部なら全部のまま
   S.shuffle=false; S.weak=false;                    // 「〜番から順に」の意図を優先
@@ -440,7 +540,7 @@ function refreshView(){
   $("list").style.display=listMode?"block":"none";
   if(listMode)renderList(); else renderCard();
 }
-const askJump=()=>{const v=prompt("何番から始めますか? (1〜100)");if(v!==null&&v.trim()!=="")jumpTo(v.trim())};
+const askJump=()=>{const v=prompt("何番から始めますか? (1〜"+D.length+")");if(v!==null&&v.trim()!=="")jumpTo(v.trim())};
 $("tJump").onclick=askJump;
 $("num").onclick=e=>{e.stopPropagation();askJump()};
 $("tList").onclick=()=>{listMode=!listMode;refresh(false)};

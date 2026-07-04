@@ -1,6 +1,6 @@
 {
-  "name": "銀フレ 001–100 単語帳",
-  "short_name": "銀フレ100",
+  "name": "銀フレ 001–200 単語帳",
+  "short_name": "銀フレ",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
