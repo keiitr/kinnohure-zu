@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>銀フレ 001–100</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="銀フレ100">
+<meta name="theme-color" content="#12151F">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<style>
+:root{
+  --bg:#12151F; --card:#1C2130; --card-hi:#232a3d;
+  --ink:#F2EFE8; --muted:#8B93A7; --line:#2C3448;
+  --acc:#F97B2F; --acc-soft:#FFB27A; --ok:#F97B2F;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overscroll-behavior:none}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:"Avenir Next","Hiragino Sans","Hiragino Kaku Gothic ProN",-apple-system,sans-serif;
+  display:flex; flex-direction:column;
+  padding:calc(var(--safe-top) + 10px) 16px calc(var(--safe-bottom) + 12px);
+  user-select:none;-webkit-user-select:none;
+  max-width:560px;margin:0 auto;width:100%;
+}
+header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px}
+h1{font-size:17px;font-weight:700;letter-spacing:.02em}
+h1 small{color:var(--acc);font-weight:600;margin-left:6px;font-size:12px}
+#stat{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+#stat b{color:var(--acc);font-weight:700}
+
+#bar{height:4px;background:var(--line);border-radius:2px;overflow:hidden;margin-bottom:12px}
+#barFill{height:100%;width:0;background:var(--acc);border-radius:2px;transition:width .3s}
+
+#chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-shrink:0}
+#chips::-webkit-scrollbar{display:none}
+.chip{
+  flex-shrink:0;border:1px solid var(--line);color:var(--muted);background:transparent;
+  border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600;font-family:inherit;
+  font-variant-numeric:tabular-nums;
+}
+.chip.on{background:var(--acc);border-color:var(--acc);color:#12151F}
+.chip .dot{display:inline-block;width:6px;height:6px;border-radius:3px;background:var(--acc);margin-right:5px;vertical-align:1px}
+.chip.on .dot{background:#12151F}
+
+#tools{display:flex;gap:8px;margin-bottom:10px;flex-shrink:0}
+.tool{
+  flex:1;border:1px solid var(--line);background:var(--card);color:var(--muted);
+  border-radius:10px;padding:8px 0;font-size:12.5px;font-weight:600;font-family:inherit;
+}
+.tool.on{color:var(--acc);border-color:var(--acc)}
+
+#stage{flex:1;display:flex;flex-direction:column;min-height:0}
+#card{
+  flex:1;background:var(--card);border:1px solid var(--line);border-radius:20px;
+  padding:24px 22px;display:flex;flex-direction:column;justify-content:center;gap:18px;
+  position:relative;overflow:hidden;min-height:0;
+}
+#card:active{background:var(--card-hi)}
+#num{
+  position:absolute;top:16px;left:20px;font-size:12px;font-weight:700;color:var(--muted);
+  font-variant-numeric:tabular-nums;letter-spacing:.08em;
+}
+#num b{color:var(--acc)}
+#knownTag{
+  position:absolute;top:14px;right:16px;font-size:11px;font-weight:700;color:var(--acc);
+  border:1px solid var(--acc);border-radius:999px;padding:3px 10px;display:none;
+}
+#ja{font-size:17px;line-height:1.6;color:var(--acc-soft);font-weight:600}
+#en{font-size:24px;line-height:1.5;font-weight:600;letter-spacing:.01em;overflow-wrap:break-word}
+#en .blank{
+  color:var(--acc);border-bottom:2px dashed var(--acc);padding:0 2px;
+  font-variant-numeric:tabular-nums;letter-spacing:.06em;
+}
+#en .fill{color:var(--acc);border-bottom:2px solid var(--acc);padding:0 2px;animation:pop .25s ease}
+@keyframes pop{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+#answer{display:none;border-top:1px solid var(--line);padding-top:16px}
+#word{font-size:30px;font-weight:700;color:var(--acc);margin-bottom:6px;letter-spacing:.01em}
+#mean{font-size:15.5px;line-height:1.7;color:var(--ink)}
+#mean .pos{
+  display:inline-block;font-size:11px;font-weight:700;color:#12151F;background:var(--muted);
+  border-radius:4px;padding:1px 6px;margin-right:6px;vertical-align:1.5px;
+}
+#hint{
+  text-align:center;color:var(--muted);font-size:12.5px;margin-top:auto;padding-top:12px;
+}
+#speak{
+  position:absolute;bottom:14px;right:14px;width:44px;height:44px;border-radius:22px;
+  border:1px solid var(--acc);background:transparent;color:var(--acc);font-size:19px;
+  display:flex;align-items:center;justify-content:center;font-family:inherit;
+}
+#speak:active{background:var(--acc);color:#12151F}
+#speak.playing{background:var(--acc);color:#12151F}
+#empty{flex:1;display:none;align-items:center;justify-content:center;color:var(--muted);font-size:14px;text-align:center;line-height:1.8}
+
+#actions{display:flex;gap:10px;margin-top:12px;flex-shrink:0}
+.act{
+  flex:1;border:none;border-radius:14px;padding:16px 0;font-size:16px;font-weight:700;font-family:inherit;
+}
+.act:active{opacity:.75}
+#btnAgain{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+#btnKnown{background:var(--acc);color:#12151F}
+.act small{display:block;font-size:10.5px;font-weight:600;opacity:.65;margin-top:2px}
+
+/* list view */
+#list{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;display:none;border-radius:16px}
+.row{
+  display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);
+  border-radius:12px;padding:12px 14px;margin-bottom:8px;
+}
+.row .rn{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;width:26px;flex-shrink:0}
+.row .rw{font-size:16px;font-weight:700;width:34%;flex-shrink:0;overflow-wrap:break-word}
+.row .rm{font-size:12.5px;color:var(--muted);line-height:1.5;flex:1}
+.row .rk{
+  width:26px;height:26px;border-radius:13px;border:1.5px solid var(--line);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:13px;color:transparent;
+}
+.row.known .rk{background:var(--acc);border-color:var(--acc);color:#12151F}
+.row.known .rw{color:var(--acc)}
+</style>
+</head>
+<body>
+<header>
+  <h1>銀フレ<small>Score 600 / 001–100</small></h1>
+  <div id="stat"></div>
+</header>
+<div id="bar"><div id="barFill"></div></div>
+
+<div id="chips"></div>
+<div id="tools">
+  <button class="tool" id="tShuffle">🔀 シャッフル</button>
+  <button class="tool" id="tWeak">苦手のみ</button>
+  <button class="tool" id="tAuto">🔊 自動</button>
+  <button class="tool" id="tList">一覧</button>
+</div>
+
+<div id="stage">
+  <div id="card">
+    <div id="num"></div>
+    <div id="knownTag">✓ 覚えた</div>
+    <div id="ja"></div>
+    <div id="en"></div>
+    <div id="answer">
+      <div id="word"></div>
+      <div id="mean"></div>
+    </div>
+    <div id="hint">タップして答えを表示</div>
+    <button id="speak" aria-label="英語を再生">🔊</button>
+  </div>
+  <div id="empty">このデッキの単語はすべて「覚えた」になっています 🎉<br>チップで範囲を変えるか、一覧からリセットできます。</div>
+  <div id="actions">
+    <button class="act" id="btnAgain">まだ<small>もう一度出題</small></button>
+    <button class="act" id="btnKnown">覚えた<small>チェックを付ける</small></button>
+  </div>
+</div>
+<div id="list"></div>
+
+<script>
+// {n, w:見出し語, m:[[品詞,意味]], en:フレーズ({}=空所), ja:和訳}
+const D=[
+[1,"anyway",[["副","とにかく"]],"Let's try {anyway}.","とにかくやってみよう。"],
+[2,"following",[["前","〜に続いて"],["形","次の、以下の"]],"{Following} the speech, we had dinner.","スピーチに続いて、夕食をとった。"],
+[3,"refer",[["動","参照する、言及する、(人を)紹介する"]],"Please {refer} to the map.","地図を参照してください。"],
+[4,"available",[["形","入手できる、利用できる、手が空いている"]],"Tickets are {available} online.","チケットはオンラインで入手可能です。"],
+[5,"department",[["名","部門、売り場"]],"the sales {department}","営業部"],
+[6,"conference",[["名","会議"]],"a large {conference} room","大きな会議室"],
+[7,"according to",[["前","〜によると、〜に従って"]],"{according} to the e-mail","メールによると"],
+[8,"likely",[["副","おそらく"],["形","〜しそうだ"]],"Who most {likely} is the woman?","女性はおそらく誰ですか。"],
+[9,"offer",[["動","申し出る、提供する"],["名","申し出、オファー"]],"What does the man {offer} to do?","男性は何をすることを申し出ていますか。"],
+[10,"equipment",[["名","機器、装備"]],"new office {equipment}","新しいオフィス機器"],
+[11,"provide",[["動","提供する"]],"Please {provide} me with your e-mail address.","あなたのメールアドレスを提供してください。"],
+[12,"local",[["形","地元の"],["名","地元の人"]],"{local} businesses","地元の会社"],
+[13,"purchase",[["動","購入する"],["名","購入品"]],"{purchase} tickets","チケットを購入する"],
+[14,"opening",[["名","空き、開店"]],"a job {opening}","仕事の空き"],
+[15,"construction",[["名","建設"]],"a {construction} project","建設プロジェクト"],
+[16,"tour",[["動","見学する、旅行する"],["名","見学、旅行"]],"while {touring} the factory","工場を見学している間"],
+[17,"research",[["名","研究、調査"],["動","研究する、調査する"]],"market {research}","市場調査"],
+[18,"attend",[["動","出席する、参加する"]],"{attend} a meeting","会議に出席する"],
+[19,"delivery",[["名","配達(物)"]],"change a {delivery} date","配達日を変更する"],
+[20,"recently",[["副","最近"]],"I {recently} bought a printer.","私は最近プリンターを買った。"],
+[21,"indicate",[["動","示す"]],"What is {indicated} about Mr. Kato?","加藤さんについて何が示されていますか。"],
+[22,"employee",[["名","社員、従業員"]],"an {employee} of a hotel","ホテルの従業員"],
+[23,"additional",[["形","追加の"]],"request {additional} staff","追加のスタッフを要請する"],
+[24,"survey",[["名","アンケート調査"],["動","アンケート調査を行う"]],"a customer {survey}","顧客アンケート調査"],
+[25,"review",[["動","検討する、論評する"],["名","検討、論評"]],"{review} a report","報告書に目を通す"],
+[26,"production",[["名","生産、作品"]],"the {production} area","生産エリア"],
+[27,"located",[["形","位置して"]],"conveniently {located} near a subway station","地下鉄の駅近くの便利な場所にある"],
+[28,"detail",[["名","詳細"],["動","詳しく述べる"]],"{details} of a plan","計画の詳細"],
+[29,"announce",[["動","発表する"]],"{announce} the winners","入賞者を発表する"],
+[30,"repair",[["名","修理"],["動","修理する"]],"a computer {repair} shop","コンピュータの修理店"],
+[31,"increase",[["名","増加"],["動","増える、増やす"]],"an {increase} in sales","売り上げの増加"],
+[32,"include",[["動","含む"]],"What is NOT {included} in the form?","用紙に含まれていないのは何ですか。"],
+[33,"currently",[["副","現在"]],"The item is {currently} out of stock.","その品は現在在庫切れです。"],
+[34,"advertising",[["名","広告(業)、宣伝(活動)"]],"an {advertising} campaign","広告キャンペーン"],
+[35,"charge",[["動","請求する"],["名","料金、責任"]],"We {charge} $50 for the service.","そのサービスには50ドルを請求します。"],
+[36,"expect",[["動","予期する、予定する"]],"Mr. Kato is {expected} to arrive tomorrow.","加藤さんは明日到着する予定だ。"],
+[37,"firm",[["名","会社"]],"a family-owned {firm}","家族経営の会社"],
+[38,"client",[["名","顧客、クライアント"]],"visit a {client}","顧客を訪問する"],
+[39,"financial",[["形","お金の、財務の、金融の"]],"{financial} support from the government","政府からのお金の支援"],
+[40,"annual",[["形","年に1度の、毎年恒例の、年間の"]],"an {annual} report","年次報告書"],
+[41,"payment",[["名","支払い"]],"make an online {payment}","オンラインの支払いをする"],
+[42,"budget",[["名","予算"],["動","予算に計上する"]],"this year's {budget}","今年の予算"],
+[43,"application",[["名","応募書類、応募、申請"]],"fill out an {application}","応募書類に記入する"],
+[44,"contract",[["名","契約(書)"]],"before signing a {contract}","契約に署名する前に"],
+[45,"management",[["名","経営(陣)、管理"]],"a {management} seminar","経営セミナー"],
+[46,"performance",[["名","業績、仕事ぶり、性能、公演"]],"an employee's {performance}","従業員の成績"],
+[47,"pleased",[["形","喜んで、満足して"]],"We are {pleased} with the final result.","最終結果に満足している。"],
+[48,"confirm",[["動","確認する"]],"{confirm} a payment","支払いを確認する"],
+[49,"award",[["名","賞"],["動","授与する"]],"an {awards} ceremony","授賞式"],
+[50,"clothing",[["名","衣類"]],"a {clothing} store","衣料品店"],
+[51,"display",[["名","展示"],["動","展示する"]],"products on {display}","展示されている製品"],
+[52,"candidate",[["名","候補者"]],"a successful {candidate}","合格した候補者"],
+[53,"state",[["動","述べる"],["名","状態"]],"What is {stated} about the hotel?","ホテルについて何が述べられていますか。"],
+[54,"exhibit",[["名","展示物、展示会"],["動","展示する"]],"a museum {exhibit}","博物館の展示物"],
+[55,"session",[["名","時間、集まり"]],"a Q&A {session}","質疑応答の時間"],
+[56,"note",[["動","注意する、述べる"],["名","メモ"]],"Please {note} that prices may change.","値段は変更になる場合があるので、注意してください。"],
+[57,"process",[["動","処理する"],["名","プロセス、過程、処理"]],"{process} an order","注文を処理する"],
+[58,"instruction",[["名","説明書、説明、指示"]],"Please read all the {instructions}.","説明書をすべてお読みください。"],
+[59,"membership",[["名","会員(であること)、会員資格、会員数"]],"sign up for {membership}","会員登録する"],
+[60,"agency",[["名","代理店、機関"]],"a travel {agency}","旅行代理店"],
+[61,"based",[["形","拠点のある、基づく"]],"a Seattle-{based} company","シアトルに拠点を置く会社"],
+[62,"facility",[["名","施設"]],"a research {facility}","研究施設"],
+[63,"advance",[["形","事前の"],["名","進歩、前進"]],"{advance} notice","事前の告知"],
+[64,"committee",[["名","委員会"]],"join a {committee}","委員会に入る"],
+[65,"successful",[["形","成功した、うまく行く"]],"The event was {successful}.","そのイベントは成功だった。"],
+[66,"excellent",[["形","素晴らしい"]],"{excellent} service","素晴らしいサービス"],
+[67,"industry",[["名","産業、業界"]],"the fashion {industry}","ファッション業界"],
+[68,"fee",[["名","料金"]],"pay a late {fee}","延滞料金を払う"],
+[69,"accept",[["動","受け入れる"]],"{accept} an offer","オファーを受け入れる"],
+[70,"upcoming",[["形","今度の"]],"prepare for an {upcoming} event","今度のイベントの準備をする"],
+[71,"latest",[["形","最新の"]],"Haruki Murakami's {latest} novel","村上春樹の最新の小説"],
+[72,"submit",[["動","提出する"]],"{submit} a report","レポートを提出する"],
+[73,"transportation",[["名","輸送手段"]],"use public {transportation}","公共の交通機関を利用する"],
+[74,"résumé",[["名","履歴書"]],"send a {résumé}","履歴書を送る"],
+[75,"executive",[["名","重役"],["形","重役(用)の、高級な"]],"a company {executive}","会社の重役"],
+[76,"introduce",[["動","導入する、紹介する"]],"{introduce} a new line of products","新たな商品ラインを導入する"],
+[77,"previous",[["形","前の、以前の"]],"have no {previous} experience","以前の経験がない"],
+[78,"proposal",[["名","提案、提案書"]],"review a {proposal}","提案に目を通す"],
+[79,"supply",[["名","必需品"],["動","供給する"]],"office {supplies}","オフィス用品"],
+[80,"enclose",[["動","同封する、囲む"]],"My résumé is {enclosed}.","履歴書を同封いたします。"],
+[81,"policy",[["名","規定、方針"]],"returns {policy}","返品規定"],
+[82,"register",[["動","登録する"],["名","レジ"]],"{register} for employee training","社員研修に登録する"],
+[83,"arrange",[["動","手配する、並べる"]],"{arrange} a meeting","会議の手配をする"],
+[84,"bill",[["名","請求書"],["動","請求書を送る"]],"receive a {bill}","請求書を受け取る"],
+[85,"hire",[["動","雇う"]],"{hire} an assistant","アシスタントを雇う"],
+[86,"approve",[["動","承認する、賛成する"]],"{approve} a plan","計画を承認する"],
+[87,"conduct",[["動","実行する、実施する"]],"{conduct} a survey","アンケート調査を行う"],
+[88,"opportunity",[["名","機会、チャンス"]],"an {opportunity} to work with you","あなたとお仕事をする機会"],
+[89,"deadline",[["名","締め切り、期限"]],"the {deadline} for the project","プロジェクトの締め切り"],
+[90,"corporate",[["形","企業の、法人の"]],"a {corporate} trainer","企業のトレーナー"],
+[91,"warranty",[["名","保証、保証書"]],"a three-year {warranty}","3年保証"],
+[92,"necessary",[["形","必要な"]],"{necessary} forms","必要な用紙"],
+[93,"reserve",[["動","予約する、確保する"],["名","蓄え"]],"{reserve} a room at a hotel","ホテルの部屋を予約する"],
+[94,"resident",[["名","住民、住人"]],"local {residents}","地元の住民"],
+[95,"create",[["動","創造する、作り出す"]],"{create} a new logo","新しいロゴを作り出す"],
+[96,"inform",[["動","知らせる、影響を与える"]],"We are happy to {inform} you that 〜","〜を知らせることができて嬉しい"],
+[97,"allow",[["動","許す、可能にする"]],"{allow} customers to pay online","顧客がオンラインで支払うことを可能にする"],
+[98,"mention",[["動","述べる、言及する"],["名","言及"]],"What problem does the man {mention}?","男性はどんな問題について述べていますか。"],
+[99,"appreciate",[["動","感謝する"]],"I really {appreciate} your help.","助けて頂いて本当に感謝しています。"],
+[100,"replacement",[["名","交換、交換品、後任"]],"{replacement} parts","交換部品"],
+];
+
+const KEY="ginfure600_v1";
+let S; try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
+S.known=S.known||{};           // {番号:true}
+S.range=S.range??"all";        // "all" or 0..9
+S.shuffle=S.shuffle??false;
+S.weak=S.weak??false;
+S.auto=S.auto??true;           // 答え表示時に自動読み上げ
+
+// ---- 音声(Web Speech API / iOS対応) ----
+let enVoice=null;
+function pickVoice(){
+  const vs=speechSynthesis.getVoices();
+  if(!vs.length)return;
+  enVoice =
+    vs.find(v=>/^en[-_]US/i.test(v.lang)&&/Samantha|Ava|Allison|Enhanced|Premium/i.test(v.name)) ||
+    vs.find(v=>/^en[-_]US/i.test(v.lang)) ||
+    vs.find(v=>/^en/i.test(v.lang)) || null;
+}
+if("speechSynthesis" in window){
+  pickVoice();
+  speechSynthesis.onvoiceschanged=pickVoice;
+}
+function speak(text){
+  if(!("speechSynthesis" in window)||!text)return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang="en-US";
+  if(enVoice)u.voice=enVoice;
+  u.rate=0.92;
+  const btn=$("speak");
+  u.onstart=()=>btn&&btn.classList.add("playing");
+  u.onend=u.onerror=()=>btn&&btn.classList.remove("playing");
+  speechSynthesis.speak(u);
+}
+function currentAudioText(){
+  if(!deck.length)return"";
+  const d=deck[idx];
+  const sentence=d[3].replace(/[{}]/g,"").replace(/〜/g,"");
+  // 答え表示前は単語を伏せてフレーズだけ、表示後は「単語 → フレーズ」
+  return revealed ? d[1]+". ... "+sentence : sentence;
+}
+const save=()=>localStorage.setItem(KEY,JSON.stringify(S));
+
+const $=id=>document.getElementById(id);
+let deck=[], idx=0, revealed=false, listMode=false;
+
+function buildChips(){
+  const c=$("chips"); c.innerHTML="";
+  const mk=(label,val)=>{
+    const b=document.createElement("button");
+    b.className="chip"+(S.range===val?" on":"");
+    const done=val==="all"
+      ? Object.keys(S.known).length
+      : D.slice(val*10,val*10+10).filter(d=>S.known[d[0]]).length;
+    const total=val==="all"?100:10;
+    b.innerHTML=(done===total?'<span class="dot"></span>':"")+label;
+    b.onclick=()=>{S.range=val;save();refresh(true)};
+    c.appendChild(b);
+  };
+  mk("全部","all");
+  for(let i=0;i<10;i++) mk(`${String(i*10+1).padStart(3,"0")}–${String(i*10+10).padStart(3,"0")}`,i);
+}
+
+function buildDeck(){
+  let d=S.range==="all"?D.slice():D.slice(S.range*10,S.range*10+10);
+  if(S.weak) d=d.filter(x=>!S.known[x[0]]);
+  if(S.shuffle){d=d.slice();for(let i=d.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[d[i],d[j]]=[d[j],d[i]]}}
+  deck=d; idx=Math.min(idx,Math.max(0,deck.length-1));
+}
+
+function phrase(en,reveal){
+  return en.replace(/\{([^}]+)\}/,(_,w)=>{
+    if(reveal) return `<span class="fill">${w}</span>`;
+    const cap=w[0]===w[0].toUpperCase();
+    const head=w.slice(0,1);
+    return `<span class="blank">${head}${"–".repeat(Math.max(4,Math.min(8,w.length-1)))}</span>`;
+  });
+}
+
+function renderCard(){
+  const has=deck.length>0;
+  $("card").style.display=has?"flex":"none";
+  $("empty").style.display=has?"none":"flex";
+  $("actions").style.visibility=has?"visible":"hidden";
+  if(!has)return;
+  const d=deck[idx];
+  $("num").innerHTML=`<b>${String(d[0]).padStart(3,"0")}</b> / 100 　 ${idx+1}/${deck.length}`;
+  $("knownTag").style.display=S.known[d[0]]?"block":"none";
+  $("ja").textContent=d[4];
+  $("en").innerHTML=phrase(d[3],revealed);
+  $("answer").style.display=revealed?"block":"none";
+  if(revealed){
+    $("word").textContent=d[1];
+    $("mean").innerHTML=d[2].map(([p,m])=>`<div><span class="pos">${p}</span>${m}</div>`).join("");
+  }
+  $("hint").textContent=revealed?"「まだ / 覚えた」を選んで次へ":"タップして答えを表示";
+}
+
+function renderStat(){
+  const n=Object.keys(S.known).length;
+  $("stat").innerHTML=`覚えた <b>${n}</b> / 100`;
+  $("barFill").style.width=n+"%";
+}
+
+function renderList(){
+  const L=$("list"); L.innerHTML="";
+  const src=S.range==="all"?D:D.slice(S.range*10,S.range*10+10);
+  src.forEach(d=>{
+    const r=document.createElement("div");
+    r.className="row"+(S.known[d[0]]?" known":"");
+    r.innerHTML=`<span class="rn">${String(d[0]).padStart(3,"0")}</span>
+      <span class="rw">${d[1]}</span>
+      <span class="rm">${d[2].map(x=>x[1]).join(" / ")}</span>
+      <span class="rk">✓</span>`;
+    r.onclick=()=>{
+      if(S.known[d[0]]) delete S.known[d[0]]; else S.known[d[0]]=true;
+      save(); refresh(false);
+    };
+    L.appendChild(r);
+  });
+}
+
+function refresh(resetIdx){
+  if(resetIdx){idx=0;revealed=false}
+  buildChips(); buildDeck(); renderStat();
+  $("tShuffle").classList.toggle("on",S.shuffle);
+  $("tWeak").classList.toggle("on",S.weak);
+  $("tAuto").classList.toggle("on",S.auto);
+  $("tList").classList.toggle("on",listMode);
+  $("stage").style.display=listMode?"none":"flex";
+  $("list").style.display=listMode?"block":"none";
+  if(listMode) renderList(); else renderCard();
+}
+
+$("card").onclick=()=>{
+  if(!revealed){
+    revealed=true;renderCard();
+    if(S.auto)speak(currentAudioText());
+  }
+};
+$("speak").onclick=e=>{e.stopPropagation();speak(currentAudioText())};
+function next(mark){
+  if(!deck.length)return;
+  if("speechSynthesis" in window)speechSynthesis.cancel();
+  const d=deck[idx];
+  if(mark){S.known[d[0]]=true} else {delete S.known[d[0]]}
+  save();
+  if(S.weak&&mark){deck.splice(idx,1); if(idx>=deck.length)idx=0}
+  else{idx=(idx+1)%deck.length}
+  revealed=false; buildChips(); renderStat(); renderCard();
+}
+$("btnKnown").onclick=()=>next(true);
+$("btnAgain").onclick=()=>next(false);
+$("tShuffle").onclick=()=>{S.shuffle=!S.shuffle;save();refresh(true)};
+$("tWeak").onclick=()=>{S.weak=!S.weak;save();refresh(true)};
+$("tAuto").onclick=()=>{S.auto=!S.auto;save();refresh(false)};
+$("tList").onclick=()=>{listMode=!listMode;refresh(false)};
+
+refresh(true);
+if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script>
+</body>
+</html>
